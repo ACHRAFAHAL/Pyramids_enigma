@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let chatHistory = [];
         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
         const payload = { contents: chatHistory };
-        const apiKey = "API_KEY_HERE"; // Replace with your actual API key
+        const apiKey = "AIzaSyB78pYs3q40f8YNFcyC7rAAh3oxDZHUaec"; // Replace with your actual API key
         if (!apiKey) {
             console.error('API key is not set. Please set your API key.');
             outputElement.textContent = 'API key is not set. Please set your API key.';
