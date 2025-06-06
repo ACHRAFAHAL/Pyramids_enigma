@@ -1,0 +1,80 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FDF8F0; /* Creamy beige background */
+    color: #4A3F35; /* Dark brown text */
+}
+.bg-papyrus {
+    background-color: #F5EEDC;
+}
+.accent-color {
+    color: #C08A57; /* Muted gold/terracotta */
+}
+.accent-bg {
+    background-color: #C08A57;
+}
+.accent-border {
+    border-color: #C08A57;
+}
+.secondary-bg {
+    background-color: #EFE6D8;
+}
+.nav-link {
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: #C08A57;
+}
+.timeline-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.timeline-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.theory-tab.active {
+    background-color: #C08A57;
+    color: #FDF8F0;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+#pyramid-3d-container {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Adjust height as needed */
+    margin-top: 2rem;
+    border-radius: 0.75rem; /* rounded-lg */
+    overflow: hidden;
+    background-color: #EFE6D8; /* secondary-bg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+#pyramid-3d-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none; /* Prevent browser touch gestures */
+}
+.pyramid-name {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255,255,255,0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    color: #333;
+    font-size: 2rem;
+}

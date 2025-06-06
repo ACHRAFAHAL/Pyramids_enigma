@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unveiling the Blueprint: The Story of the Pyramid Builders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <header class="bg-papyrus/80 backdrop-blur-md sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold accent-color">Ancient Blueprint</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#evolution" class="nav-link font-semibold">Evolution</a>
+                <a href="#enigma" class="nav-link font-semibold">The Enigma</a>
+                <a href="#builders" class="nav-link font-semibold">The Builders</a>
+                <a href="#scholar" class="nav-link font-semibold">Pyramid Scholar</a>
+                <a href="#evidence" class="nav-link font-semibold">Evidence</a>
+                <a href="#about" class="nav-link font-semibold">About</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-stone-200 border border-stone-400 rounded-md p-2">
+                    <option value="#home">Menu</option>
+                    <option value="#evolution">Evolution</option>
+                    <option value="#enigma">The Enigma</option>
+                    <option value="#builders">The Builders</option>
+                    <option value="#scholar">Pyramid Scholar</option>
+                    <option value="#evidence">Evidence</option>
+                    <option value="#about">About</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <h2 class="text-4xl md:text-6xl font-bold accent-color leading-tight">Unveiling the Ancient Blueprint</h2>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto">An interactive journey into the engineering marvels, ingenious techniques, and the untold human story behind the construction of the Egyptian Pyramids.</p>
+            <div id="pyramid-3d-container">
+                <div class="pyramid-name">Menkaure's Pyramid</div>
+            </div>
+        </section>
+
+        <section id="evolution" class="py-16 md:py-20 bg-secondary-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold accent-color">The Genesis of Giants</h3>
+                    <p class="mt-2 max-w-2xl mx-auto">The iconic pyramid form wasn't a sudden invention, but the result of centuries of daring experimentation, learning from structural failures, and relentless innovation. This section explores that evolutionary journey, from humble mastabas to the wonders of Giza.</p>
+                </div>
+                
+                <div class="relative">
+                    <div class="border-l-4 accent-border absolute h-full top-0 left-4 md:left-1/2 md:-ml-0.5"></div>
+                    <div id="timeline-content" class="space-y-12">
+                    </div>
+                </div>
+
+                <div class="mt-16">
+                    <h4 class="text-2xl font-bold text-center mb-4">A Monumental Leap in Scale</h4>
+                    <p class="text-center max-w-3xl mx-auto mb-8">This chart illustrates the dramatic increase in height across the key phases of pyramid development, showcasing the rapid escalation of ambition and engineering capability.</p>
+                    <div class="chart-container">
+                        <canvas id="pyramidHeightChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="enigma" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold accent-color">The Engineering Enigma</h3>
+                    <p class="mt-2 max-w-2xl mx-auto">How did the ancient Egyptians lift millions of multi-ton blocks with such precision? With no definitive record, a number of compelling theories have emerged. Explore the leading hypotheses and judge the evidence for yourself.</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button data-theory="ramp" class="theory-tab active px-4 py-2 font-semibold rounded-full transition-colors duration-300">Ramp Systems</button>
+                    <button data-theory="internal" class="theory-tab px-4 py-2 font-semibold rounded-full transition-colors duration-300">Internal Ramp</button>
+                    <button data-theory="water" class="theory-tab px-4 py-2 font-semibold rounded-full transition-colors duration-300">Water Lift</button>
+                    <button data-theory="concrete" class="theory-tab px-4 py-2 font-semibold rounded-full transition-colors duration-300">Concrete</button>
+                </div>
+
+                <div id="theory-display" class="bg-secondary-bg p-6 md:p-8 rounded-lg shadow-inner">
+                </div>
+                <div class="mt-8 text-center">
+                    <button id="expand-theory-btn" class="bg-accent-bg text-FDF8F0 px-6 py-3 rounded-full font-bold shadow-md hover:shadow-lg transition-shadow duration-300">✨ Expand Theory Insights</button>
+                    <div id="expanded-theory-output" class="mt-4 p-4 bg-papyrus rounded-lg shadow-sm text-left hidden">
+                        <p id="expanded-theory-text" class="italic text-sm"></p>
+                        <p id="expanded-theory-loading" class="text-center text-sm hidden">Generating insights... please wait.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="builders" class="py-16 md:py-20 bg-papyrus">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold accent-color">The City of Builders</h3>
+                    <p class="mt-2 max-w-3xl mx-auto">The pyramids were not built by slaves, but by a skilled and organized workforce of up to 20,000 people. They were housed, fed, and given medical care in a dedicated city. This section tells their untold story—a story of pride, hardship, and community.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="scholar" class="py-16 md:py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold accent-color mb-4">✨ Ask the Pyramid Scholar</h3>
+                <p class="mt-2 max-w-2xl mx-auto mb-8">Curious for more? Ask our AI-powered Pyramid Scholar any question about ancient Egyptian pyramids, their construction, or the people who built them!</p>
+                <div class="max-w-3xl mx-auto bg-secondary-bg p-6 rounded-lg shadow-lg">
+                    <textarea id="scholar-input" class="w-full p-4 rounded-lg border-2 border-stone-300 focus:border-accent-color focus:ring-accent-color resize-y min-h-[100px] mb-4" placeholder="e.g., How long did it take to build the Great Pyramid?"></textarea>
+                    <button id="ask-scholar-btn" class="bg-accent-bg text-FDF8F0 px-6 py-3 rounded-full font-bold shadow-md hover:shadow-lg transition-shadow duration-300">Ask Scholar</button>
+                    <div id="scholar-output" class="mt-6 p-4 bg-papyrus rounded-lg shadow-sm text-left hidden">
+                        <p id="scholar-text"></p>
+                        <p id="scholar-loading" class="text-center text-sm hidden">Consulting ancient texts... please wait.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evidence" class="py-16 md:py-20 bg-secondary-bg">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold accent-color">Voices from the Past</h3>
+                    <p class="mt-2 max-w-2xl mx-auto">While many mysteries remain, some incredible discoveries provide a direct window into the past. The most important of these is the logbook of an inspector named Merer, the oldest papyrus ever found.</p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-papyrus p-8 rounded-lg shadow-lg border-2 accent-border">
+                    <h4 class="text-2xl font-bold mb-4">The Logbook of Merer</h4>
+                    <p class="mb-6">Discovered in 2013, this 4,500-year-old papyrus details the daily work of a team of about 40 elite sailors during the final years of the Great Pyramid's construction. It is a stunningly modern-looking administrative document that shatters any idea of a primitive operation.</p>
+                    <div class="border-t-2 accent-border pt-4 space-y-4">
+                        <div class="p-4 bg-stone-100 rounded">
+                            <p class="font-semibold">📜 Daily Entries:</p>
+                            <p>Merer's logbook was organized as a timetable. It recorded the transport of high-quality Tura limestone casing stones by boat down the Nile and through a system of canals directly to the Giza harbor.</p>
+                        </div>
+                        <div class="p-4 bg-stone-100 rounded">
+                            <p class="font-semibold">🚢 Sophisticated Logistics:</p>
+                            <p>The logbook confirms that water transport was the logistical backbone of the project, detailing a two-day journey for limestone delivery and mentioning the vizier Ankhhaef as the overseer of this massive project.</p>
+                        </div>
+                        <div class="p-4 bg-stone-100 rounded">
+                            <p class="font-semibold">💰 Accounting and Rations:</p>
+                            <p>The documents include accounts of food and ration distribution to the workers, confirming they were a paid and well-supported labor force.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 md:py-20">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold accent-color mb-4">About the Creator</h3>
+                    <div class="bg-secondary-bg p-6 rounded-lg shadow-inner">
+                        <p><strong>Created by:</strong> AHAL Achraf</p>
+                        <p class="mt-2">Explore more projects on GitHub: <a href="[https://github.com/ACHRAFAHAL]" target="_blank" class="text-blue-600 hover:underline">My GitHub</a></p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold accent-color mb-4">Source Citations</h3>
+                    <div class="bg-secondary-bg p-6 rounded-lg shadow-inner">
+                        <p>This project is based on a synthesis of modern archaeological and historical research. Key sources include:</p>
+                        <ul class="mt-4 space-y-2 list-disc list-inside">
+                            <li>Lehner, M. (2017). *The Complete Pyramids: Solving the Ancient Mysteries*. Thames & Hudson.</li>
+                            <li>Tallet, P. (2017). *Les Papyrus de la Mer Rouge I: Le 'Journal de Merer' (P. Jarf A et B)*. Institut Français d'Archéologie Orientale.</li>
+                            <li>Romer, J. (2007). *The Great Pyramid: Ancient Egypt Revisited*. Cambridge University Press.</li>
+                            <li>Davidovits, J. (2008). *They Built the Pyramids*. Geopolymer Institute.</li>
+                            <li>Ancient Egypt Research Associates (AERA). *aeraweb.org*. (For research on the workers' city).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-papyrus py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 The Pharaoh's Coders. An educational project for the History Hackathon.</p>
+        </div>
+    </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
