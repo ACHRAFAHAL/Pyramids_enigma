@@ -74,7 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Dispelling a Myth',
             icon: '✅',
             content: 'The pyramid builders were not slaves. They were a mix of skilled, permanent employees and seasonal agricultural workers. Building the pyramids was a national project and a form of civic duty, for which workers were paid in rations of food, beer, and other goods.',
-            type: 'text'
+            type: 'text',
+            image: {
+                src: 'images/relief-workers.jpg',
+                alt: 'Ancient Egyptian relief showing pyramid workers'
+            }
+            
         },
         {
             title: 'Daily Rations',
@@ -91,7 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'A City of their Own',
             icon: '🏠',
             content: 'Archaeologists have excavated "Heit el-Ghurab," a planned city for the workers. It contained large galleries for sleeping, massive bakeries and kitchens capable of feeding thousands, and even a hospital where workers received medical attention for injuries sustained on the job.',
-            type: 'text'
+            type: 'text',
+            image: {
+                src: 'images/map-heit-el-ghurab.png',
+                alt: 'Map of Heit el-Ghurab worker city'
+            },
+            learnMore: 'https://msu-anthropology.github.io/daea-fs16/sites/heit-el-ghurab/heit-el-ghurab.html'
         },
         {
             title: 'The Human Cost',
@@ -108,13 +118,23 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Team Spirit',
             icon: '🤝',
             content: 'The workforce was highly organized into crews and gangs. Graffiti left by these teams inside the pyramids reveals their names, such as "The Drunkards of Menkaure" or "The Friends of Khufu Gang." This shows a sense of pride, camaraderie, and team identity.',
-            type: 'text'
+            type: 'text',
+            image: {
+                src: 'images/graffiti-workers.jpg',
+                alt: 'Graffiti left by pyramid workers'
+            },
+            learnMore: 'https://www.archaeology.wiki/blog/2013/11/27/penalties-imposed-on-two-amateur-german-archaeologists/'
         },
         {
             title: 'Tools of the Trade',
             icon: '⛏️',
             content: 'Lacking iron, workers used copper chisels and saws for soft limestone, which wore down quickly. For hard granite, they had to pound it with hard dolerite stones and use sand as an abrasive to slowly grind away the rock—a testament to their incredible patience and persistence.',
-            type: 'text'
+            type: 'text',
+            image: {
+                src: 'images/tools.jpg',
+                alt: 'Ancient Egyptian tools used for pyramid construction'
+            },
+            learnMore: 'https://www.q-files.com/history/ancient-egypt/pyramids-how-they-were-built'
         }
     ];
 
@@ -124,30 +144,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function initTimeline() {
         const timelineContainer = document.getElementById('timeline-content');
         timelineData.forEach((item, index) => {
-            const isLeft = index % 2 === 0;
-            const timelineElement = document.createElement('div');
-            timelineElement.classList.add('timeline-item', 'relative', 'p-6', 'md:p-8', 'bg-papyrus', 'rounded-lg', 'shadow-md', 'md:w-5/12', 'lg:w-1/3');
-            if (isLeft) {
-                timelineElement.classList.add('ml-8', 'md:ml-auto', 'md:mr-[58%]');
-            } else {
-                timelineElement.classList.add('ml-8', 'md:ml-[58%]');
-            }
-
-            timelineElement.innerHTML = `
-                <div class="absolute top-7 -left-10 md:left-auto md:top-1/2 md:-mt-3 ${isLeft ? 'md:-right-10 md:left-auto' : 'md:-left-10'}">
-                    <div class="h-6 w-6 rounded-full accent-bg border-4 border-FDF8F0"></div>
+            const isEven = index % 2 === 0;
+            const timelineItem = document.createElement('div');
+            timelineItem.className = `relative flex md:items-start ${isEven ? 'flex-col md:flex-row' : 'flex-col md:flex-row-reverse'}`;
+            
+            timelineItem.innerHTML = `
+                <div class="flex items-center md:w-1/2 ${isEven ? 'md:pr-8' : 'md:pl-8'}">
+                    <div class="w-8 h-8 bg-accent-bg rounded-full flex items-center justify-center relative z-10">
+                        <span class="text-FDF8F0">✦</span>
+                    </div>
+                    <div class="ml-4 bg-papyrus p-6 rounded-lg shadow-md">
+                        <h4 class="text-xl font-bold mb-2">${item.name}</h4>
+                        <p class="text-sm font-semibold accent-color mb-2">${item.date}</p>
+                        <p class="mb-4">${item.description}</p>
+                        <div class="pyramid-image-container overflow-hidden rounded-lg shadow-md aspect-[2/1]">
+                            <img src="images/${item.id}.jpg" 
+                                 alt="${item.name}" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                 loading="lazy"
+                                 width="800"
+                                 height="400"
+                                 fetchpriority="low">
+                        </div>
+                    </div>
                 </div>
-                <h5 class="text-xl font-bold accent-color">${item.name}</h5>
-                <p class="text-sm font-semibold mb-2">${item.date}</p>
-                <p>${item.description}</p>
+                <div class="hidden md:block md:w-1/2"></div>
             `;
-            timelineElement.addEventListener('click', () => {
-                if(pyramidHeightChartInstance) {
-                    pyramidHeightChartInstance.data.datasets[0].backgroundColor = timelineData.map(d => d.id === item.id ? '#C08A57' : '#EFE6D8');
-                    pyramidHeightChartInstance.update();
-                }
-            });
-            timelineContainer.appendChild(timelineElement);
+            
+            timelineContainer.appendChild(timelineItem);
         });
     }
 
@@ -192,32 +216,49 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTheoryDisplay(theoryKey) {
         const theory = theoriesData[theoryKey];
         const container = document.getElementById('theory-display');
-        container.innerHTML = `
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <h5 class="text-2xl font-bold accent-color mb-3">${theory.title}</h5>
-                    <p class="font-semibold mb-1">How it works:</p>
-                    <p class="mb-4">${theory.description}</p>
-                    <p class="font-semibold mb-1">Evidence:</p>
-                    <p class="mb-4">${theory.evidence}</p>
-                    <p class="font-semibold mb-1">Challenges:</p>
-                    <p>${theory.challenges}</p>
+        
+        // Add fade-out effect
+        container.style.opacity = '0';
+        
+        setTimeout(() => {
+            container.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h5 class="text-2xl font-bold accent-color mb-3">${theory.title}</h5>
+                        <p class="font-semibold mb-1">How it works:</p>
+                        <p class="mb-4">${theory.description}</p>
+                        <p class="font-semibold mb-1">Evidence:</p>
+                        <p class="mb-4">${theory.evidence}</p>
+                        <p class="font-semibold mb-1">Challenges:</p>
+                        <p>${theory.challenges}</p>
+                    </div>
+                    <div class="chart-container h-64 md:h-auto">
+                        <canvas id="theoryPlausibilityChart"></canvas>
+                    </div>
                 </div>
-                <div class="chart-container h-64 md:h-auto">
-                    <canvas id="theoryPlausibilityChart"></canvas>
-                </div>
-            </div>
-        `;
-        // Store current theory for LLM expansion
-        container.dataset.currentTheory = theoryKey;
-        initTheoryPlausibilityChart(theory.plausibility);
+            `;
+            
+            // Store current theory for LLM expansion
+            container.dataset.currentTheory = theoryKey;
+            
+            // Initialize chart with animation
+            initTheoryPlausibilityChart(theory.plausibility);
+            
+            // Fade back in
+            requestAnimationFrame(() => {
+                container.style.opacity = '1';
+            });
+        }, 300);
     }
 
     function initTheoryPlausibilityChart(data) {
-        if(theoryPlausibilityChartInstance) {
+        const ctx = document.getElementById('theoryPlausibilityChart').getContext('2d');
+        
+        // Destroy existing chart instance if it exists
+        if (theoryPlausibilityChartInstance) {
             theoryPlausibilityChartInstance.destroy();
         }
-        const ctx = document.getElementById('theoryPlausibilityChart').getContext('2d');
+        
         theoryPlausibilityChartInstance = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -232,9 +273,34 @@ document.addEventListener('DOMContentLoaded', () => {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    duration: 1200,
+                    easing: 'easeInOutQuart',
+                    animateRotate: true,
+                    animateScale: true,
+                    delay: 300 // Add delay to sync with container fade-in
+                },
                 plugins: {
-                    legend: { position: 'bottom' },
-                    title: { display: true, text: 'Scholarly Acceptance' }
+                    legend: { 
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    title: { 
+                        display: true, 
+                        text: 'Scholarly Acceptance',
+                        padding: {
+                            bottom: 15
+                        },
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
                 }
             }
         });
@@ -245,41 +311,144 @@ document.addEventListener('DOMContentLoaded', () => {
         buildersData.forEach(card => {
             const cardEl = document.createElement('div');
             cardEl.className = 'bg-secondary-bg p-6 rounded-lg shadow-md transition-shadow hover:shadow-xl';
-            cardEl.innerHTML = `
+            
+            // Build the card content
+            let contentHTML = `
                 <div class="flex items-center mb-3">
                     <span class="text-3xl mr-4">${card.icon}</span>
                     <h5 class="text-xl font-bold">${card.title}</h5>
                 </div>
-                <p>${card.content}</p>
-                ${card.type === 'chart' ? `<div class="chart-container mt-4 h-64"><canvas id="${card.chartId}"></canvas></div>` : ''}
+                <p class="mb-4">${card.content}</p>
             `;
+
+            // Add image if present
+            if (card.image) {
+                contentHTML += `
+                    <div class="overflow-hidden rounded-lg shadow-md mb-4">
+                        <img src="${card.image.src}" 
+                             alt="${card.image.alt}"
+                             class="w-full aspect-[2/1] object-cover hover:scale-105 transition-transform duration-300"
+                             loading="lazy">
+                    </div>
+                `;
+            }
+
+            // Add chart if present
+            if (card.type === 'chart') {
+                contentHTML += `
+                    <div class="chart-container mt-4 h-64">
+                        <canvas id="${card.chartId}"></canvas>
+                    </div>
+                `;
+            }
+
+            // Add learn more link if present
+            if (card.learnMore) {
+                contentHTML += `
+                    <div class="mt-4">
+                        <a href="${card.learnMore}" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="learn-more-link">
+                            Learn More
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                `;
+            }
+
+            cardEl.innerHTML = contentHTML;
             grid.appendChild(cardEl);
         });
+
+        // Initialize charts after all cards are added to DOM
+        requestAnimationFrame(() => {
+            // Diet Chart
+            const dietCardData = buildersData.find(c => c.chartId === 'dietChart');
+            if (dietCardData) {
+                const dietCtx = document.getElementById('dietChart')?.getContext('2d');
+                if (dietCtx) {
+                    new Chart(dietCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: dietCardData.chartData.labels,
+                            datasets: [{
+                                data: dietCardData.chartData.data,
+                                backgroundColor: ['#a15c3e', '#e0ac69', '#6a6f58', '#9d9169']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'top' }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Lifespan Chart
+            const lifespanCardData = buildersData.find(c => c.chartId === 'lifespanChart');
+            if (lifespanCardData) {
+                const lifespanCtx = document.getElementById('lifespanChart')?.getContext('2d');
+                if (lifespanCtx) {
+                    new Chart(lifespanCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: lifespanCardData.chartData.labels,
+                            datasets: [{
+                                label: 'Average Lifespan (Years)',
+                                data: lifespanCardData.chartData.data,
+                                backgroundColor: ['#a15c3e', '#e0ac69']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function optimizePerformance() {
+        // Debounce scroll events
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // Handle scroll-based updates
+            }, 100);
+        });
+
+        // Optimize chart rendering
+        Chart.defaults.animation = false;
         
-        const dietCardData = buildersData.find(c => c.chartId === 'dietChart');
-        if (dietCardData) {
-            const dietCtx = document.getElementById('dietChart').getContext('2d');
-            new Chart(dietCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: dietCardData.chartData.labels,
-                    datasets: [{ data: dietCardData.chartData.data, backgroundColor: ['#a15c3e', '#e0ac69', '#6a6f58', '#9d9169'] }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }}}
-            });
-        }
+        // Throttle 3D animation
+        let lastTime = 0;
+        const fps = 30;
+        const interval = 1000 / fps;
         
-        const lifespanCardData = buildersData.find(c => c.chartId === 'lifespanChart');
-        if (lifespanCardData) {
-            const lifespanCtx = document.getElementById('lifespanChart').getContext('2d');
-            new Chart(lifespanCtx, {
-                type: 'bar',
-                data: {
-                    labels: lifespanCardData.chartData.labels,
-                    datasets: [{ label: 'Average Lifespan (Years)', data: lifespanCardData.chartData.data, backgroundColor: ['#a15c3e', '#e0ac69'] }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }}}
-            });
+        function animate(currentTime) {
+            requestAnimationFrame(animate);
+            
+            if (currentTime - lastTime < interval) return;
+            
+            if (loadedModel) {
+                loadedModel.rotation.y += 0.001;
+            }
+            
+            camera.lookAt(scene.position);
+            renderer.render(scene, camera);
+            
+            lastTime = currentTime;
         }
     }
 
@@ -292,15 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let chatHistory = [];
         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
         const payload = { contents: chatHistory };
-        const apiKey = "AIzaSyB78pYs3q40f8YNFcyC7rAAh3oxDZHUaec"; // Replace with your actual API key
-        if (!apiKey) {
-            console.error('API key is not set. Please set your API key.');
-            outputElement.textContent = 'API key is not set. Please set your API key.';
-            outputElement.classList.remove('hidden');
-            loadingElement.classList.add('hidden');
-            return;
-        }
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        
+        // Use environment variable instead of hardcoded API key
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.API_KEY}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -386,11 +549,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Initialize in the correct order
     initTimeline();
-    initPyramidHeightChart();
-    // Initial display of the "ramp" theory
-    updateTheoryDisplay('ramp');
     initBuilderCards();
+    initPyramidHeightChart();
+    updateTheoryDisplay('ramp');
+    optimizePerformance();
 
     // Three.js specific code
     window.onload = function() {

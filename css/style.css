@@ -32,9 +32,16 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
+.theory-tab {
+    transition: all 0.3s ease-in-out;
+}
 .theory-tab.active {
     background-color: #C08A57;
     color: #FDF8F0;
+    transform: translateY(-2px);
+}
+#theory-display {
+    transition: opacity 0.3s ease-in-out;
 }
 .chart-container {
     position: relative;
@@ -44,6 +51,8 @@ body {
     margin-right: auto;
     height: 300px;
     max-height: 400px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
 }
 @media (min-width: 768px) {
     .chart-container {
@@ -77,4 +86,44 @@ body {
     font-weight: bold;
     color: #333;
     font-size: 2rem;
+}
+.pyramid-image-container {
+    background-color: #EFE6D8;
+    border: 2px solid #C08A57;
+}
+
+.pyramid-image-container img {
+    filter: sepia(20%);
+}
+
+.pyramid-image-container:hover img {
+    filter: sepia(0%);
+}
+
+/* Learn More Link Styling */
+.learn-more-link {
+    display: inline-flex;
+    align-items: center;
+    color: #C08A57;
+    font-weight: 600;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.learn-more-link:hover {
+    border-bottom-color: #C08A57;
+    transform: translateX(4px);
+}
+
+.learn-more-link svg {
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+    transition: transform 0.2s ease;
+}
+
+.learn-more-link:hover svg {
+    transform: translateX(2px);
 }
