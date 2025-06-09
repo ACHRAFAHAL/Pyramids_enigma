@@ -435,6 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastTime = 0;
         const fps = 30;
         const interval = 1000 / fps;
+        let pyramidAngle = 0;
         
         function animate(currentTime) {
             requestAnimationFrame(animate);
@@ -442,7 +443,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentTime - lastTime < interval) return;
             
             if (loadedModel) {
+                // Slowly rotate the model for better visibility
                 loadedModel.rotation.y += 0.001;
+                
+                // Optional: Add slight up and down bobbing motion
+                loadedModel.position.y = Math.sin(pyramidAngle) * 0.05;
+                pyramidAngle += 0.05;
             }
             
             camera.lookAt(scene.position);
@@ -461,9 +467,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let chatHistory = [];
         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
         const payload = { contents: chatHistory };
-        
-        // Use environment variable instead of hardcoded API key
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.API_KEY}`;
+        // !!! IMPORTANT: Replace with your actual Gemini API Key !!!
+        const apiKey = "AIzaSyD3njx3QBBk3DY_hJ3_OkLumt2Kn--PaMY"; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -479,12 +485,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 outputElement.textContent = text;
                 outputElement.classList.remove('hidden');
             } else {
-                outputElement.textContent = 'Sorry, I could not generate a response. Please try again.';
+                outputElement.textContent = 'Sorry, I could not generate a response. Please check your API key and try again.';
                 outputElement.classList.remove('hidden');
             }
         } catch (error) {
             console.error('Error calling Gemini API:', error);
-            outputElement.textContent = 'There was an error communicating with the Pyramid Scholar. Please try again later.';
+            outputElement.textContent = 'There was an error communicating with the Pyramid Scholar. Please check your API key and internet connection, then try again later.';
             outputElement.classList.remove('hidden');
         } finally {
             loadingElement.classList.add('hidden');
