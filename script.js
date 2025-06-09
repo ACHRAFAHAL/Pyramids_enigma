@@ -707,4 +707,62 @@ document.addEventListener('DOMContentLoaded', () => {
         initThreeJS();
         animate();
     };
+
+    function createLoadingScreen() {
+        const loadingScreen = document.createElement('div');
+        loadingScreen.id = 'loading-screen';
+        loadingScreen.innerHTML = `
+            <div class="loading-content">
+                <div class="pyramid-loader"></div>
+                <p class="loading-text">Loading the Ancient Wonder...</p>
+                <div class="hieroglyphs">☥ 𓂀 𓃭 𓆣 𓇯 𓈯</div>
+            </div>
+        `;
+        container.appendChild(loadingScreen);
+
+        // Remove loading screen when model is loaded
+        loader.load(
+            modelPath,
+            function (gltf) {
+                // 1) Load the model
+                const modelScene = gltf.scene;
+
+                // 2) Create a pivot object
+                const pivot = new THREE.Object3D();
+                scene.add(pivot);
+
+                // 3) Add the model to the pivot
+                pivot.add(modelScene);
+
+                // 4) Scale the model first
+                modelScene.scale.set(0.2, 0.2, 0.2);
+
+                // 5) Now compute the bounding box (after scaling)
+                const bbox = new THREE.Box3().setFromObject(modelScene);
+                const center = bbox.getCenter(new THREE.Vector3());
+
+                // 6) Shift the model so its center is at the pivot origin
+                modelScene.position.sub(center);
+
+                // 7) Move pivot to the original center
+                pivot.position.copy(center);
+
+                // 8) Store the pivot as "loadedModel" so we can rotate around it
+                loadedModel = pivot;
+
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').remove();
+                }, 500);
+            },
+            function (xhr) {
+                // This function is called while loading is progressing
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            function (error) {
+                // This function is called if there's an error during loading
+                console.error('Error loading GLB model:', error);
+            }
+        );
+    }
 });
