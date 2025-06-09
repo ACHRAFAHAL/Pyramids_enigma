@@ -224,9 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = `
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h5 class="text-2xl font-bold accent-color mb-3">${theory.title}</h5>
-                        <p class="font-semibold mb-1">How it works:</p>
-                        <p class="mb-4">${theory.description}</p>
+                        <h5 class="text-2xl font-bold accent-color font-title mb-3">${theory.title}</h5>
+                        <p class="font-subtitle font-semibold mb-1">How it works:</p>
+                        <p class="mb-4 font-body">${theory.description}</p>
                         <p class="font-semibold mb-1">Evidence:</p>
                         <p class="mb-4">${theory.evidence}</p>
                         <p class="font-semibold mb-1">Challenges:</p>
@@ -316,9 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let contentHTML = `
                 <div class="flex items-center mb-3">
                     <span class="text-3xl mr-4">${card.icon}</span>
-                    <h5 class="text-xl font-bold">${card.title}</h5>
+                    <h5 class="text-xl font-bold font-title">${card.title}</h5>
                 </div>
-                <p class="mb-4">${card.content}</p>
+                <p class="mb-4 font-body">${card.content}</p>
             `;
 
             // Add image if present
@@ -691,78 +691,75 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        let isAnimating = true;
+        let pyramidAnimationId = null;
+
         // Animation loop
         function animate() {
-        requestAnimationFrame(animate);
+            if (!isAnimating) return;
+            
+            // Rotate the pivot (and thus the model) around its own Y-axis
+            if (loadedModel) {
+                loadedModel.rotation.y += 0.001; // Adjust speed as desired
+            }
 
-        // Rotate the pivot (and thus the model) around its own Y-axis
-        if (loadedModel) {
-            loadedModel.rotation.y += 0.001; // Adjust speed as desired
+            camera.lookAt(scene.position);
+            renderer.render(scene, camera);
+
+            pyramidAnimationId = requestAnimationFrame(animate);
         }
 
-        camera.lookAt(scene.position);
-        renderer.render(scene, camera);
-    }
+        // Create intersection observer for the pyramid container
+        function initPyramidObserver() {
+            const pyramidContainer = document.getElementById('pyramid-3d-container');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Resume animation when pyramid is visible
+                        isAnimating = true;
+                        animate();
+                    } else {
+                        // Stop animation when pyramid is not visible
+                        isAnimating = false;
+                        if (pyramidAnimationId) {
+                            cancelAnimationFrame(pyramidAnimationId);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when at least 10% of the element is visible
+            });
+
+            observer.observe(pyramidContainer);
+        }
 
         initThreeJS();
-        animate();
+        initPyramidObserver();
+        animate(); // Start initial animation
     };
 
-    function createLoadingScreen() {
-        const loadingScreen = document.createElement('div');
-        loadingScreen.id = 'loading-screen';
-        loadingScreen.innerHTML = `
-            <div class="loading-content">
-                <div class="pyramid-loader"></div>
-                <p class="loading-text">Loading the Ancient Wonder...</p>
-                <div class="hieroglyphs">☥ 𓂀 𓃭 𓆣 𓇯 𓈯</div>
-            </div>
-        `;
-        container.appendChild(loadingScreen);
-
-        // Remove loading screen when model is loaded
-        loader.load(
-            modelPath,
-            function (gltf) {
-                // 1) Load the model
-                const modelScene = gltf.scene;
-
-                // 2) Create a pivot object
-                const pivot = new THREE.Object3D();
-                scene.add(pivot);
-
-                // 3) Add the model to the pivot
-                pivot.add(modelScene);
-
-                // 4) Scale the model first
-                modelScene.scale.set(0.2, 0.2, 0.2);
-
-                // 5) Now compute the bounding box (after scaling)
-                const bbox = new THREE.Box3().setFromObject(modelScene);
-                const center = bbox.getCenter(new THREE.Vector3());
-
-                // 6) Shift the model so its center is at the pivot origin
-                modelScene.position.sub(center);
-
-                // 7) Move pivot to the original center
-                pivot.position.copy(center);
-
-                // 8) Store the pivot as "loadedModel" so we can rotate around it
-                loadedModel = pivot;
-
-                document.getElementById('loading-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loading-screen').remove();
-                }, 500);
-            },
-            function (xhr) {
-                // This function is called while loading is progressing
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            function (error) {
-                // This function is called if there's an error during loading
-                console.error('Error loading GLB model:', error);
-            }
-        );
-    }
 });
+
+// Tailwind CSS Configuration
+module.exports = {
+    theme: {
+        extend: {
+            fontFamily: {
+                'title': ['Cinzel', 'serif'],
+                'subtitle': ['Marcellus', 'serif'],
+                'body': ['Inter', 'sans-serif'],
+            },
+        },
+    },
+    // ...rest of your Tailwind config
+};
+
+// Add to your cleanup/dispose functions
+function cleanup() {
+    if (pyramidAnimationId) {
+        cancelAnimationFrame(pyramidAnimationId);
+    }
+    isAnimating = false;
+    // ...existing cleanup code...
+}

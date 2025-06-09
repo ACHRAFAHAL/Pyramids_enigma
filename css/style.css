@@ -1,5 +1,11 @@
+:root {
+    --font-title: 'Cinzel', serif;
+    --font-subtitle: 'Marcellus', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     background-color: #FDF8F0; /* Creamy beige background */
     color: #4A3F35; /* Dark brown text */
 }
@@ -8,6 +14,7 @@ body {
 }
 .accent-color {
     color: #C08A57; /* Muted gold/terracotta */
+    font-family: var(--font-title);
 }
 .accent-bg {
     background-color: #C08A57;
@@ -34,6 +41,7 @@ body {
 }
 .theory-tab {
     transition: all 0.3s ease-in-out;
+    font-family: var(--font-subtitle);
 }
 .theory-tab.active {
     background-color: #C08A57;
@@ -83,9 +91,11 @@ body {
     background-color: rgba(255,255,255,0.7);
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
     font-size: 2rem;
+    font-family: var(--font-title);
+    letter-spacing: 0.05em;
 }
 .pyramid-image-container {
     background-color: #EFE6D8;
@@ -128,75 +138,22 @@ body {
     transform: translateX(2px);
 }
 
-#loading-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #FDF8F0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease;
-    z-index: 1000;
+/* Main title styles */
+h1, h2, h3 {
+    font-family: var(--font-title);
+    letter-spacing: 0.03em;
 }
 
-.loading-content {
-    text-align: center;
+/* Subtitle and section header styles */
+h4, h5 {
+    font-family: var(--font-subtitle);
+    letter-spacing: 0.02em;
 }
 
-.pyramid-loader {
-    width: 0;
-    height: 0;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
-    border-bottom: 86.6px solid #C08A57;
-    margin: 0 auto 20px;
-    animation: pyramid-pulse 2s ease-in-out infinite;
-    position: relative;
-}
-
-.pyramid-loader::after {
-    content: '';
-    position: absolute;
-    left: -40px;
-    bottom: -86.6px;
-    width: 80px;
-    height: 10px;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    animation: shadow-pulse 2s ease-in-out infinite;
-}
-
-.loading-text {
-    font-family: 'Cinzel', serif;
-    font-size: 1.2rem;
-    color: #8B4513;
-    margin-bottom: 1rem;
-}
-
-.hieroglyphs {
-    font-size: 2rem;
-    letter-spacing: 0.5rem;
-    color: #C08A57;
-    animation: glow 2s ease-in-out infinite;
-}
-
-@keyframes pyramid-pulse {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-}
-
-@keyframes shadow-pulse {
-    0% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(0.8); opacity: 0.3; }
-    100% { transform: scale(1); opacity: 0.5; }
-}
-
-@keyframes glow {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
+/* Optional: Add hieroglyphic decorative elements */
+.section-title::before,
+.section-title::after {
+    content: "☥";  /* Ancient Egyptian Ankh symbol */
+    padding: 0 0.5em;
+    opacity: 0.7;
 }

@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <!-- Critical CSS and Meta tags first -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="An interactive exploration of the engineering marvels, ingenious techniques, and the untold human story behind the construction of the Egyptian Pyramids.">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Marcellus&display=swap" rel="stylesheet">
+
     
-    <!-- Defer non-critical scripts -->
     <script src="https://cdn.tailwindcss.com" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js" defer></script>
-</head>
+    </head>
+    
 <body class="antialiased">
 
     <header class="bg-papyrus/80 backdrop-blur-md sticky top-0 z-50 shadow-md">
@@ -135,23 +137,30 @@
                     <h3 class="text-3xl md:text-4xl font-bold accent-color">Voices from the Past</h3>
                     <p class="mt-2 max-w-2xl mx-auto">While many mysteries remain, some incredible discoveries provide a direct window into the past. The most important of these is the logbook of an inspector named Merer, the oldest papyrus ever found.</p>
                 </div>
-                <div class="max-w-4xl mx-auto bg-papyrus p-8 rounded-lg shadow-lg border-2 accent-border">
-                    <h4 class="text-2xl font-bold mb-4">The Logbook of Merer</h4>
-                    <p class="mb-6">Discovered in 2013, this 4,500-year-old papyrus details the daily work of a team of about 40 elite sailors during the final years of the Great Pyramid's construction. It is a stunningly modern-looking administrative document that shatters any idea of a primitive operation.</p>
-                    <div class="border-t-2 accent-border pt-4 space-y-4">
-                        <div class="p-4 bg-stone-100 rounded">
-                            <p class="font-semibold">📜 Daily Entries:</p>
-                            <p>Merer's logbook was organized as a timetable. It recorded the transport of high-quality Tura limestone casing stones by boat down the Nile and through a system of canals directly to the Giza harbor.</p>
-                        </div>
-                        <div class="p-4 bg-stone-100 rounded">
-                            <p class="font-semibold">🚢 Sophisticated Logistics:</p>
-                            <p>The logbook confirms that water transport was the logistical backbone of the project, detailing a two-day journey for limestone delivery and mentioning the vizier Ankhhaef as the overseer of this massive project.</p>
-                        </div>
-                        <div class="p-4 bg-stone-100 rounded">
-                            <p class="font-semibold">💰 Accounting and Rations:</p>
-                            <p>The documents include accounts of food and ration distribution to the workers, confirming they were a paid and well-supported labor force.</p>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="max-w-4xl mx-auto bg-papyrus p-8 rounded-lg shadow-lg border-2 accent-border">
+                        <h4 class="text-2xl font-bold mb-4">The Logbook of Merer</h4>
+                        <p class="mb-6">Discovered in 2013, this 4,500-year-old papyrus details the daily work of a team of about 40 elite sailors during the final years of the Great Pyramid's construction. It is a stunningly modern-looking administrative document that shatters any idea of a primitive operation.</p>
+                        <div class="border-t-2 accent-border pt-4 space-y-4">
+                            <div class="p-4 bg-stone-100 rounded">
+                                <p class="font-semibold">📜 Daily Entries:</p>
+                                <p>Merer's logbook was organized as a timetable. It recorded the transport of high-quality Tura limestone casing stones by boat down the Nile and through a system of canals directly to the Giza harbor.</p>
+                            </div>
+                            <div class="p-4 bg-stone-100 rounded">
+                                <p class="font-semibold">🚢 Sophisticated Logistics:</p>
+                                <p>The logbook confirms that water transport was the logistical backbone of the project, detailing a two-day journey for limestone delivery and mentioning the vizier Ankhhaef as the overseer of this massive project.</p>
+                            </div>
+                            <div class="p-4 bg-stone-100 rounded">
+                                <p class="font-semibold">💰 Accounting and Rations:</p>
+                                <p>The documents include accounts of food and ration distribution to the workers, confirming they were a paid and well-supported labor force.</p>
+                            </div>
                         </div>
                     </div>
+                    <img 
+                        src="images/Logbook of Merer.png" 
+                        alt="Ancient Logbook of Merer"
+                        class="w-auto h-[400px] object-contain"
+                    />
                 </div>
             </div>
         </section>
