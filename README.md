@@ -1,4 +1,4 @@
-# Pyramids Enigma
+<img width="1897" height="929" alt="Capture d'écran 2025-08-25 135727" src="https://github.com/user-attachments/assets/c6247827-6535-4ef5-bf15-bf717ed2c3ce" /># Pyramids Enigma
 
 **Unveiling the Ancient Blueprint**  
 An interactive exploration of the engineering, ingenious techniques, and human stories behind the construction of the Egyptian pyramids.
@@ -16,6 +16,8 @@ An interactive exploration of the engineering, ingenious techniques, and human s
 ## Project Overview
 
 **Pyramids Enigma** is an interactive, educational web experience designed to guide users through the evolution, techniques, and social facets of pyramid construction in Ancient Egypt. From evolutionary designs to modern architectural inquiries—this journey invites both discovery and engagement.
+
+<img width="1902" height="929" alt="Capture d'écran 2025-08-25 135621" src="https://github.com/user-attachments/assets/fe6dcf34-97fa-45a4-be6d-35fa7d31c138" />
 
 👉 Live demo: [Pyramids Enigma](https://achrafahal.github.io/Pyramids_enigma/)
 
