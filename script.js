@@ -458,8 +458,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // API Key Management
+    function getApiKey() {
+        return localStorage.getItem('gemini-api-key');
+    }
+
+    function saveApiKey(key) {
+        localStorage.setItem('gemini-api-key', key);
+    }
+
+    function validateApiKey() {
+        const apiKey = getApiKey();
+        const askButton = document.getElementById('ask-scholar-btn');
+        const statusDiv = document.getElementById('api-key-status');
+        
+        if (apiKey && apiKey.trim() !== '') {
+            askButton.disabled = false;
+            statusDiv.classList.add('hidden');
+            return true;
+        } else {
+            askButton.disabled = true;
+            statusDiv.textContent = 'Please enter your Gemini API key above to use the Pyramid Scholar.';
+            statusDiv.classList.remove('hidden');
+            return false;
+        }
+    }
+
     // LLM Integration Functions
     async function callGemini(prompt, outputElement, loadingElement) {
+        const apiKey = getApiKey();
+        
+        if (!apiKey || apiKey.trim() === '') {
+            outputElement.textContent = 'Please enter your Gemini API key to use the Pyramid Scholar.';
+            outputElement.classList.remove('hidden');
+            return;
+        }
+
         outputElement.textContent = '';
         outputElement.classList.add('hidden');
         loadingElement.classList.remove('hidden');
@@ -467,8 +501,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let chatHistory = [];
         chatHistory.push({ role: "user", parts: [{ text: prompt }] });
         const payload = { contents: chatHistory };
-        // !!! IMPORTANT: Replace with your actual Gemini API Key !!!
-        const apiKey = "AIzaSyD3njx3QBBk3DY_hJ3_OkLumt2Kn--PaMY"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
         try {
@@ -478,6 +510,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(payload)
             });
             const result = await response.json();
+            
+            if (response.status === 403 || response.status === 401) {
+                outputElement.textContent = 'Invalid API key. Please check your Gemini API key and try again.';
+                outputElement.classList.remove('hidden');
+                return;
+            }
+            
             if (result.candidates && result.candidates.length > 0 &&
                 result.candidates[0].content && result.candidates[0].content.parts &&
                 result.candidates[0].content.parts.length > 0) {
@@ -498,7 +537,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event Listeners for LLM Features
+    
+    // API Key management
+    document.getElementById('save-api-key-btn').addEventListener('click', () => {
+        const apiKeyInput = document.getElementById('api-key-input');
+        const apiKey = apiKeyInput.value.trim();
+        
+        if (apiKey) {
+            saveApiKey(apiKey);
+            validateApiKey();
+            apiKeyInput.value = ''; // Clear the input for security
+            
+            // Show success message temporarily
+            const statusDiv = document.getElementById('api-key-status');
+            statusDiv.textContent = '✅ API key saved successfully!';
+            statusDiv.className = 'mt-2 text-sm text-green-600';
+            statusDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                statusDiv.classList.add('hidden');
+            }, 3000);
+        } else {
+            const statusDiv = document.getElementById('api-key-status');
+            statusDiv.textContent = 'Please enter a valid API key.';
+            statusDiv.className = 'mt-2 text-sm text-red-600';
+            statusDiv.classList.remove('hidden');
+        }
+    });
+
     document.getElementById('ask-scholar-btn').addEventListener('click', () => {
+        if (!validateApiKey()) {
+            return;
+        }
+        
         const input = document.getElementById('scholar-input');
         const output = document.getElementById('scholar-text');
         const loading = document.getElementById('scholar-loading');
@@ -518,6 +589,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('expand-theory-btn').addEventListener('click', () => {
+        if (!validateApiKey()) {
+            const output = document.getElementById('expanded-theory-text');
+            const outputContainer = document.getElementById('expanded-theory-output');
+            output.textContent = 'Please enter your Gemini API key to use the theory expansion feature.';
+            outputContainer.classList.remove('hidden');
+            return;
+        }
+        
         const theoryDisplay = document.getElementById('theory-display');
         const currentTheoryKey = theoryDisplay.dataset.currentTheory;
         const theory = theoriesData[currentTheoryKey];
@@ -737,6 +816,9 @@ document.addEventListener('DOMContentLoaded', () => {
         initThreeJS();
         initPyramidObserver();
         animate(); // Start initial animation
+        
+        // Initialize API key validation
+        validateApiKey();
     };
 
 });
